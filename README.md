@@ -1,6 +1,6 @@
 # Meu Primeiro Projeto
 
-Este é um repositorio de exemplo para aprender o fluxo de Pull Requests no GitHub.
+Este é um repositório de exemplo para aprender o fluxo de Pull Requests no GitHub.
 
 ## Objetivo
 
