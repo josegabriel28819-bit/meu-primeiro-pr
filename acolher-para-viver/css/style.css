@@ -93,27 +93,45 @@ img { max-width: 100%; display: block; }
 }
 
 .main-nav {
+  position: absolute;
+  top: 100%;
+  right: 1.25rem;
+  left: 1.25rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
   display: flex;
-  gap: 1.4rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.2s ease, opacity 0.15s ease;
+}
+.main-nav.open {
+  max-height: 480px;
+  opacity: 1;
+  margin-top: 0.5rem;
 }
 .main-nav a {
   color: var(--ink-soft);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
-  padding: 0.3rem 0.1rem;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.15s, background-color 0.15s;
 }
+.main-nav a:last-child { border-bottom: none; }
 .main-nav a:hover,
 .main-nav a:focus-visible {
   color: var(--teal-700);
-  border-color: var(--teal-500);
+  background: var(--teal-100);
 }
 
 .nav-toggle {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 4px;
@@ -123,6 +141,7 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border);
   border-radius: 8px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 .nav-toggle span {
   display: block;
@@ -461,27 +480,3 @@ img { max-width: 100%; display: block; }
 }
 .site-footer p { margin: 0.25rem 0; }
 .footer-note { color: #9fc0c0; max-width: 620px; margin: 0.5rem auto 0; }
-
-/* Responsive nav */
-@media (max-width: 760px) {
-  .nav-toggle { display: flex; }
-  .main-nav {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    flex-direction: column;
-    gap: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease;
-  }
-  .main-nav.open { max-height: 400px; }
-  .main-nav a {
-    padding: 0.9rem 1.25rem;
-    border-bottom: 1px solid var(--border);
-    border-radius: 0;
-  }
-}
