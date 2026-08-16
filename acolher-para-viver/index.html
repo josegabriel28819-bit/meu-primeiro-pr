@@ -38,6 +38,7 @@
     <nav class="main-nav" id="mainNav">
       <a href="#sobre">Sobre</a>
       <a href="#luto">Acolhimento ao Luto</a>
+      <a href="#galeria">Galeria</a>
       <a href="#setembro-amarelo">Setembro Amarelo</a>
       <a href="#ajuda">Precisa de Ajuda?</a>
       <a href="#participe">Participe</a>
@@ -124,6 +125,39 @@
             alguém, ou para um momento da vida, pelo qual sentiam saudade, e depositavam na mala.
           </p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="galeria" class="section">
+    <div class="section-inner">
+      <h2>Registros do semestre anterior</h2>
+      <p>
+        São poucos registros, mas cada um guarda um pedaço do que foi essa etapa do projeto.
+        Clique em uma imagem para ampliar.
+      </p>
+      <div class="gallery-grid">
+        <button type="button" class="gallery-item" data-full="img/galeria/brindes-cactos.jpg" data-caption="Cactos e suculentas preparados como brindes, cada um com uma mensagem de acolhimento.">
+          <img src="img/galeria/brindes-cactos.jpg" alt="Caixa com diversos vasos de cactos e suculentas, cada um com uma etiqueta em formato de coração com uma mensagem de acolhimento.">
+        </button>
+        <button type="button" class="gallery-item" data-full="img/galeria/brindes-suculentas.jpg" data-caption="Suculentas da Yamashita Flores, prontas para serem distribuídas na ação.">
+          <img src="img/galeria/brindes-suculentas.jpg" alt="Bandeja com suculentas embaladas, cada uma com uma etiqueta em formato de coração.">
+        </button>
+        <button type="button" class="gallery-item" data-full="img/galeria/brindes-cartoes.jpg" data-caption="Cartões e docinhos preparados pela equipe para acompanhar os brindes.">
+          <img src="img/galeria/brindes-cartoes.jpg" alt="Caixa organizada com cartões de mensagens, balas e um marcador de página em formato de girassol.">
+        </button>
+        <button type="button" class="gallery-item" data-full="img/galeria/montagem-equipe.jpg" data-caption="Um dos voluntários do projeto na montagem dos materiais.">
+          <img src="img/galeria/montagem-equipe.jpg" alt="Voluntária cortando cartões de mensagens em uma mesa de trabalho.">
+        </button>
+        <button type="button" class="gallery-item" data-full="img/galeria/montagem-mesa.jpg" data-caption="Preparação final dos cartões e docinhos antes da ação na rua.">
+          <img src="img/galeria/montagem-mesa.jpg" alt="Mesa com cartões de mensagens, docinhos e um pirulito, decorados com girassóis, sendo organizados.">
+        </button>
+        <button type="button" class="gallery-item" data-full="img/galeria/mala-da-saudade.jpg" data-caption="A Mala da Saudade, pintada à mão pelo grupo para a atividade de mensagens.">
+          <img src="img/galeria/mala-da-saudade.jpg" alt="Mala de papelão pintada à mão com girassóis e o texto Acolher Para Viver.">
+        </button>
+        <button type="button" class="gallery-item" data-full="img/galeria/acao-na-rua.jpg" data-caption="Materiais prontos para a ação na rua: mudas, cartões e a Mala da Saudade.">
+          <img src="img/galeria/acao-na-rua.jpg" alt="Caixas com mudas de plantas e cartões, e uma sacola, organizados na calçada para a ação na rua.">
+        </button>
       </div>
     </div>
   </section>
@@ -277,6 +311,14 @@
     ou tratamento por profissionais de saúde mental.
   </p>
 </footer>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Fechar imagem">&times;</button>
+  <figure class="lightbox-figure">
+    <img id="lightboxImg" src="" alt="">
+    <figcaption id="lightboxCaption"></figcaption>
+  </figure>
+</div>
 
 <script src="js/app.js"></script>
 </body>
