@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ponto-vales",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8123"],
+      "port": 8123
+    },
+    {
+      "name": "caderno-de-erros",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8124", "--directory", "caderno-de-erros"],
+      "port": 8124
+    },
+    {
+      "name": "acolher-para-viver",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8125", "--directory", "acolher-para-viver"],
+      "port": 8125
+    }
+  ]
+}
