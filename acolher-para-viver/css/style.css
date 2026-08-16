@@ -84,7 +84,13 @@ img { max-width: 100%; display: block; }
   font-weight: 700;
   font-size: 1.1rem;
 }
-.brand-mark { font-size: 1.3rem; }
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
 
 .main-nav {
   display: flex;
