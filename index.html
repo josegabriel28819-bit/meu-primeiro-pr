@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ponto, Vales & Escala</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <h1>Ponto, Vales &amp; Escala</h1>
+    <div class="colaborador-select">
+      <label for="selectColaborador">Colaborador:</label>
+      <select id="selectColaborador"></select>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="colaboradores">Colaboradores</button>
+    <button class="tab-btn" data-tab="ponto">Ponto</button>
+    <button class="tab-btn" data-tab="vales">Vale Transporte / Combustível</button>
+    <button class="tab-btn" data-tab="escalas">Escala Sábados</button>
+    <button class="tab-btn" data-tab="relatorio">Relatório</button>
+  </nav>
+
+  <main>
+
+    <!-- COLABORADORES -->
+    <section id="tab-colaboradores" class="tab-panel active">
+      <div class="card">
+        <h2 id="formColaboradorTitulo">Novo colaborador</h2>
+        <form id="formColaborador" class="form-grid" autocomplete="off">
+          <input type="hidden" id="colaboradorId">
+          <label>Nome
+            <input type="text" id="colaboradorNome" required placeholder="Nome do colaborador">
+          </label>
+          <div class="dias-semana-field">
+            <span class="dias-semana-label">Dias da semana</span>
+            <div class="dias-semana-checks">
+              <label><input type="checkbox" id="colaboradorDiaSeg" checked> Seg</label>
+              <label><input type="checkbox" id="colaboradorDiaTer" checked> Ter</label>
+              <label><input type="checkbox" id="colaboradorDiaQua" checked> Qua</label>
+              <label><input type="checkbox" id="colaboradorDiaQui" checked> Qui</label>
+              <label><input type="checkbox" id="colaboradorDiaSex" checked> Sex</label>
+            </div>
+          </div>
+          <label>Jornada diária (horas)
+            <input type="number" id="colaboradorJornada" step="0.01" min="0" value="8.8" required>
+          </label>
+          <label>Valor do vale-transporte por dia (R$)
+            <input type="number" id="colaboradorValorVT" step="0.01" min="0" value="0" required>
+          </label>
+          <label>Valor do vale-combustível por dia (R$)
+            <input type="number" id="colaboradorValorVC" step="0.01" min="0" value="0" required>
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="colaboradorTrabalhaSabado">
+            Trabalha aos sábados
+          </label>
+          <p class="hint">Quem trabalha aos sábados sai 1h mais cedo na sexta-feira (calculado automaticamente).</p>
+          <label>Sábado - entrada
+            <input type="time" id="colaboradorSabadoInicio" disabled>
+            <span class="hint">O sábado sempre dura 5h — a saída é calculada automaticamente.</span>
+          </label>
+          <label>Grupo da escala (sábado)
+            <select id="colaboradorGrupo">
+              <option value="">Nenhum</option>
+              <option value="A">Grupo A</option>
+              <option value="B">Grupo B</option>
+            </select>
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="colaboradorRecebeAparte">
+            Recebe à parte (fora do cálculo de VT/VC)
+          </label>
+          <div class="form-actions">
+            <button type="submit" id="btnSalvarColaborador">Adicionar colaborador</button>
+            <button type="button" id="btnCancelarEdicao" class="secondary hidden">Cancelar edição</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Colaboradores cadastrados</h2>
+        <div class="table-wrap">
+          <table id="tabelaColaboradores">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Dias</th>
+                <th>Jornada/dia</th>
+                <th>Sábado</th>
+                <th>Sai + cedo sex.</th>
+                <th>Grupo</th>
+                <th>VT/dia</th>
+                <th>VC/dia</th>
+                <th>Saldo VT</th>
+                <th>Saldo VC</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="empty-msg" id="msgSemColaboradores">Nenhum colaborador cadastrado ainda.</p>
+      </div>
+
+      <div class="card">
+        <h2>Backup dos dados</h2>
+        <p class="hint">Os dados ficam salvos apenas neste navegador. Use exportar/importar para fazer backup ou transferir para outro dispositivo.</p>
+        <div class="form-actions">
+          <button type="button" id="btnExportar" class="secondary">Exportar dados (.json)</button>
+          <label class="file-btn secondary">
+            Importar dados (.json)
+            <input type="file" id="inputImportar" accept="application/json" hidden>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- PONTO -->
+    <section id="tab-ponto" class="tab-panel">
+      <div id="pontoSemColaborador" class="card empty-state">
+        <p>Selecione ou cadastre um colaborador para registrar o ponto.</p>
+      </div>
+
+      <div id="pontoConteudo" class="hidden">
+        <div class="card">
+          <h2 id="pontoTituloForm">Registrar ponto do dia</h2>
+          <form id="formPonto" class="form-grid" autocomplete="off">
+            <input type="hidden" id="pontoId">
+            <label>Data
+              <input type="date" id="pontoData" required>
+            </label>
+            <label>Entrada
+              <input type="time" id="pontoEntrada" required>
+            </label>
+            <label>Saída almoço
+              <input type="time" id="pontoSaidaAlmoco">
+            </label>
+            <label>Volta almoço
+              <input type="time" id="pontoVoltaAlmoco">
+            </label>
+            <label>Saída
+              <input type="time" id="pontoSaida" required>
+            </label>
+            <label>Observação
+              <input type="text" id="pontoObs" placeholder="opcional">
+            </label>
+            <div class="form-actions">
+              <button type="submit" id="btnSalvarPonto">Salvar registro</button>
+              <button type="button" id="btnCancelarPonto" class="secondary hidden">Cancelar edição</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header-row">
+            <h2>Registros de ponto</h2>
+            <label class="filtro-mes">Mês
+              <input type="month" id="filtroMesPonto">
+            </label>
+          </div>
+
+          <div class="resumo-cards">
+            <div class="resumo-item">
+              <span class="resumo-label">Horas trabalhadas no mês</span>
+              <span class="resumo-valor" id="resumoHorasTrabalhadas">0h00</span>
+            </div>
+            <div class="resumo-item">
+              <span class="resumo-label">Jornada esperada no mês</span>
+              <span class="resumo-valor" id="resumoHorasEsperadas">0h00</span>
+            </div>
+            <div class="resumo-item">
+              <span class="resumo-label">Saldo (banco de horas)</span>
+              <span class="resumo-valor" id="resumoSaldoHoras">0h00</span>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table id="tabelaPonto">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Entrada</th>
+                  <th>Saída almoço</th>
+                  <th>Volta almoço</th>
+                  <th>Saída</th>
+                  <th>Trabalhadas</th>
+                  <th>Saldo do dia</th>
+                  <th>Obs.</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="empty-msg" id="msgSemPontos">Nenhum registro neste mês.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALES -->
+    <section id="tab-vales" class="tab-panel">
+      <div id="valesSemColaborador" class="card empty-state">
+        <p>Selecione ou cadastre um colaborador para calcular os vales.</p>
+      </div>
+
+      <div id="valesConteudo" class="hidden vales-grid">
+
+        <div class="card">
+          <h2>Vale-transporte</h2>
+          <div class="vale-config">
+            <label>Valor por dia (R$)
+              <input type="number" id="vtValorDia" step="0.01" min="0">
+            </label>
+            <label>Saldo atual (R$)
+              <input type="number" id="vtSaldoAtual" step="0.01" min="0">
+              <span class="hint">Ajuste manual se necessário (ex.: saldo informado pela operadora)</span>
+            </label>
+          </div>
+          <div class="vale-calculo">
+            <label>Dias que serão trabalhados
+              <input type="number" id="vtDias" min="0" step="1" value="0">
+            </label>
+            <button type="button" id="btnCalcularVT">Calcular reposição</button>
+          </div>
+          <div class="vale-resultado" id="resultadoVT">
+            <div class="resultado-linha"><span>Necessário no período</span><strong id="vtNecessario">R$ 0,00</strong></div>
+            <div class="resultado-linha"><span>Saldo atual</span><strong id="vtSaldoAtualDisplay">R$ 0,00</strong></div>
+            <div class="resultado-linha destaque"><span>Repor</span><strong id="vtReposicao">R$ 0,00</strong></div>
+            <button type="button" id="btnConfirmarVT" class="confirmar hidden">Confirmar reposição (atualiza saldo)</button>
+          </div>
+          <h3>Histórico</h3>
+          <div class="table-wrap">
+            <table class="tabela-historico" id="tabelaHistoricoVT">
+              <thead><tr><th>Data</th><th>Dias</th><th>Necessário</th><th>Saldo anterior</th><th>Reposição</th><th>Saldo final</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Vale-combustível</h2>
+          <div class="vale-config">
+            <label>Valor por dia (R$)
+              <input type="number" id="vcValorDia" step="0.01" min="0">
+            </label>
+            <label>Saldo atual (R$)
+              <input type="number" id="vcSaldoAtual" step="0.01" min="0">
+              <span class="hint">Ajuste manual se necessário</span>
+            </label>
+          </div>
+          <div class="vale-calculo">
+            <label>Dias que serão trabalhados
+              <input type="number" id="vcDias" min="0" step="1" value="0">
+            </label>
+            <button type="button" id="btnCalcularVC">Calcular reposição</button>
+          </div>
+          <div class="vale-resultado" id="resultadoVC">
+            <div class="resultado-linha"><span>Necessário no período</span><strong id="vcNecessario">R$ 0,00</strong></div>
+            <div class="resultado-linha"><span>Saldo atual</span><strong id="vcSaldoAtualDisplay">R$ 0,00</strong></div>
+            <div class="resultado-linha destaque"><span>Repor</span><strong id="vcReposicao">R$ 0,00</strong></div>
+            <button type="button" id="btnConfirmarVC" class="confirmar hidden">Confirmar reposição (atualiza saldo)</button>
+          </div>
+          <h3>Histórico</h3>
+          <div class="table-wrap">
+            <table class="tabela-historico" id="tabelaHistoricoVC">
+              <thead><tr><th>Data</th><th>Dias</th><th>Necessário</th><th>Saldo anterior</th><th>Reposição</th><th>Saldo final</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ESCALAS -->
+    <section id="tab-escalas" class="tab-panel">
+      <div class="card">
+        <h2>Conferência de data no Solides</h2>
+        <p class="hint">No Solides, a data do sábado aparece errada (mostra o domingo que inicia a semana, porque lá a semana começa no domingo). Use isso pra conferir qual data vai aparecer.</p>
+        <div class="form-grid">
+          <label>Data real
+            <input type="date" id="conferenciaData">
+          </label>
+        </div>
+        <div class="vale-resultado" id="conferenciaResultado"></div>
+      </div>
+
+      <div class="card">
+        <h2>Configuração da escala</h2>
+        <p class="hint">Grupo A e Grupo B se alternam nos sábados que a empresa abre (normalmente 2 por mês). Defina qual grupo começa a alternância, caso ainda não haja histórico salvo.</p>
+        <div class="form-grid">
+          <label>Grupo do 1º sábado (sem histórico)
+            <select id="escalaGrupoBase">
+              <option value="A">Grupo A</option>
+              <option value="B">Grupo B</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header-row">
+          <h2>Sábados abertos do mês</h2>
+          <label class="filtro-mes">Mês
+            <input type="month" id="escalaMes">
+          </label>
+        </div>
+        <p class="hint">Marque os sábados que a empresa vai abrir nesse mês e confira/ajuste o grupo escalado.</p>
+        <div id="escalaSabadosMes"></div>
+        <div class="form-actions">
+          <button type="button" id="btnSalvarEscalaMes">Salvar escala do mês</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Sábados escalados</h2>
+        <div class="table-wrap">
+          <table id="tabelaEscala">
+            <thead>
+              <tr>
+                <th>Data real</th>
+                <th>Grupo</th>
+                <th>Aparece no Solides como</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="empty-msg" id="msgSemEscala">Nenhum sábado escalado ainda.</p>
+      </div>
+    </section>
+
+    <!-- RELATORIO -->
+    <section id="tab-relatorio" class="tab-panel">
+      <div class="card">
+        <div class="card-header-row">
+          <h2>Relatório geral</h2>
+          <label class="filtro-mes">Mês
+            <input type="month" id="filtroMesRelatorio">
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table id="tabelaRelatorio">
+            <thead>
+              <tr>
+                <th>Colaborador</th>
+                <th>Horas trabalhadas</th>
+                <th>Saldo de horas</th>
+                <th>Saldo VT</th>
+                <th>Saldo VC</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="empty-msg" id="msgSemRelatorio">Nenhum colaborador cadastrado ainda.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
